@@ -1,5 +1,5 @@
 const express = require('express')
-
+// 菜单json
 const app = express()
 const routerList = {
 	"msg": "success",
