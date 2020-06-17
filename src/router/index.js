@@ -115,16 +115,26 @@ router.beforeEach((to, from, next) => {
 
 // router.beforeEach((to, from, next) => {
 //   if (store.getters.userinfo.account) {
-//       next()
-//       if(!router.options.isAddDynamicMenuRoutes){ //是否已经添加了动态路由 （必须）
-//         router.options.isAddDynamicMenuRoutes=true //必须
-//         let routerdata = filterAsyncRouter(data.menuList) //后台拿到路由进行过滤
-//         store.dispatch('navlist', routerdata) //后台拿到路由
-//         saveObjArr('router', data.menuList) //存储路由到localStorage
-//         routerGo(to, next, routerdata) //执行路由跳转方法
-//       }
-//   }else{
-//     if (to.path === '/') {
+//     next()
+//     // next('/login')
+//      if(to.path=='/login'){
+//        next('/')
+//      }
+//     if (!router.options.isAddDynamicMenuRoutes) { //是否已经添加了动态路由
+//        router.options.isAddDynamicMenuRoutes = true
+//        yunUserAdminMenu().then(res => {
+//         if (res.status === 200&&res.data.code=== '000' &&res.data.msg==='success') {
+//           // let routerdata = filterAsyncRouter(data.menuList) //后台拿到路由进行过滤
+//           let routerdata = filterAsyncRouter(res.data.bizData.items) //后台拿到路由进行过滤
+//           store.dispatch('navlist', routerdata) //后台拿到路由
+//           saveObjArr('router', res.data.bizData.items) //存储路由到localStorage
+//           routerGo(to, next, routerdata) //执行路由跳转方法
+//         }
+//       })
+//     }
+
+//   } else {
+//     if (to.path=='/'||to.path.indexOf('/business')!=-1) {
 //       next('/login')
 //     } else {
 //       next()
@@ -138,6 +148,7 @@ function filterAsyncRouter(data, routerArr = []) {
   // console.log(data)
   for (var i = 0; i < data.length; i++) {
     if (data[i].type === 0) {
+      if(data[i].list==null)continue;
       for (var j = 0; j < data[i].list.length; j++) {
         let childarr = []
         //判断有三级路由没
